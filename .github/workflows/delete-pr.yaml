@@ -1,0 +1,24 @@
+name: Delete PR Function
+on:
+  pull_request:
+    types: closed
+jobs:
+  deploy:
+    name: Delete PR function
+    # This job runs on Linux
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        functions: [example, example2]
+    steps:
+      - name: Delete PR function
+        uses: andeplane/deploy-function-python@master
+        env: 
+          DELETE_PR_FUNCTION: true
+        with:
+          cdf_project: datastudio
+          cdf_base_url: https://greenfield.cognitedata.com
+          cdf_deployment_credentials: ${{ secrets.COGNITE_DEPLOY_API_KEY }}
+          cdf_function_credentials: ${{ secrets.COGNITE_FUNCTION_API_KEY }}
+          function_path: ${{ matrix.functions }}
+          
